@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hisab/models/studentmanager.dart';
+import 'package:hisab/service/student_manager.dart';
 
 import '../models/student.dart';
 
