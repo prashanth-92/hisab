@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hisab/service/student_service.dart';
+import 'package:hisab/models/studentmanager.dart';
 
 import '../models/student.dart';
 
@@ -12,7 +12,9 @@ class AutocompleteStudent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var students = getStudents();
+    //var students = getStudents();
+    var students = StudentManager.instance!.students;
+    
     return Autocomplete<Student>(
       displayStringForOption: _displayStringForOption,
       optionsBuilder: (TextEditingValue textEditingValue) {

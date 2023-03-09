@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hisab/models/studentmanager.dart';
 
 import 'screens/home.dart';
 
@@ -11,6 +12,7 @@ class MyApp extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    StudentManager.init();
     return MaterialApp(
       title: 'Hisab',
       theme: ThemeData(primarySwatch: Colors.blue),

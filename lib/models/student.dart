@@ -27,4 +27,11 @@ class Student {
 
   @override
   int get hashCode => Object.hash(email, name);
+
+  factory Student.fromGsheets(Map<String, dynamic> json) {
+    return Student(
+        email: json["Student's Gmail Address"] ?? '',
+        name: json['Name of the Student with initials'],
+        school: json['School']);
+  }
 }

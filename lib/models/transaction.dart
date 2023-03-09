@@ -4,9 +4,12 @@ class Transaction {
   Transaction({
     required this.id,
     required this.amount,
+    required this.dateModified,
+    required this.student
   });
 
   final String id;
   final String amount;
-  late Student student;
+  final String dateModified;
+  final Student student;
 }
