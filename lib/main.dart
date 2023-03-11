@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hisab/service/student_manager.dart';
+import 'package:hisab/service/student_service.dart';
+import 'package:hisab/service/transaction_service.dart';
 
 import 'screens/home.dart';
 
@@ -12,7 +13,8 @@ class MyApp extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    StudentManager.init();
+    StudentService.init();
+    TransactionService.init();
     return MaterialApp(
       title: 'Hisab',
       theme: ThemeData(primarySwatch: Colors.blue),

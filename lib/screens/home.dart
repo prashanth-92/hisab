@@ -14,16 +14,18 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  var txns = getTransactions();
+  //var txns = getTransactions();
   @override
   Widget build(BuildContext context) {
-    var transactions = getTransactions();
+    TransactionService.init();
+    var txns = TransactionService.instance!.transactions;
+    //var transactions = getTransactions();
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
       body: ListView.builder(
-        itemCount: transactions.length, 
+        itemCount: txns.length, 
         itemBuilder: (BuildContext context, int index) { 
           return TransactionItem(transaction: txns[index]);
          },
