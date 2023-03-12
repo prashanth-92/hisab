@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:hisab/service/auth_service.dart';
 import 'package:hisab/service/student_service.dart';
 
 import 'screens/home.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  bool isAuthenticated = await AuthService.authenticate();
+  if (isAuthenticated) {
+    runApp(const MyApp());
+  } else {
+    main();
+  }
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  
   @override
   Widget build(BuildContext context) {
     StudentService.init();
