@@ -46,20 +46,24 @@ class _HomeState extends State<Home> {
                 return const CircularProgressIndicator();
               })),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final result =
-              await Navigator.push(context, _dialogBuilder(context, null));
-          if (!mounted || result.runtimeType != Transaction) {
-            return;
-          }
-          final existingTransactions = await transactions;
-          setState(() {
-            existingTransactions.add(result as Transaction);
-          });
-        },
+        onPressed: _addNewTransaction,
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  _addNewTransaction() async {
+    final result = await Navigator.push(context, _dialogBuilder(context, null));
+    if (!mounted || result.runtimeType != Transaction) {
+      return;
+    }
+    final existingTransactions = await transactions;
+    setState(() {
+      existingTransactions.add(result as Transaction);
+    });
+    const snackBar = SnackBar(content: Text('Transaction Added!'), backgroundColor: Colors.green);
+    // ignore: use_build_context_synchronously
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   Route<Object?> _dialogBuilder(BuildContext context, Object? arguments) {

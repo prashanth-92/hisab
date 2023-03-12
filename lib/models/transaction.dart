@@ -5,12 +5,14 @@ class Transaction {
       {required this.id,
       required this.amount,
       required this.dateModified,
+      required this.isActive,
       required this.student});
 
   final String id;
   final String amount;
   final String dateModified;
   final Student student;
+  final String isActive;
 
   Map<String, dynamic> toGsheets() {
     return {
@@ -21,7 +23,12 @@ class Transaction {
       'Class': student.className,
       'Phone': student.phoneNumber,
       'School': student.school,
+      'IsActive': isActive,
     };
+  }
+
+  bool isActiveTransaction(){
+    return isActive.toLowerCase() == "true";
   }
 
   factory Transaction.fromGsheets(Map<String, dynamic> json) {
@@ -29,6 +36,7 @@ class Transaction {
         id: json["ID"],
         amount: json["Amount"],
         dateModified: toDateTimeString(json["DateTime"]),
+        isActive: json["IsActive"],
         student: Student(
             email: '',
             name: json["Name"],

@@ -69,6 +69,7 @@ DialogRoute<void> getAddFeesDialog(BuildContext context, Object? arguments) {
                   id: uuid.v1(),
                   amount: feesController.text,
                   dateModified: DateTime.now().toString(),
+                  isActive: "true",
                   student: Student(
                       email: '',
                       name: studentName,

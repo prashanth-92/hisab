@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hisab/service/transaction_service.dart';
 
 import '../models/transaction.dart';
 
@@ -12,7 +13,9 @@ class TransactionItem extends StatelessWidget {
         key: ValueKey<Transaction>(transaction),
         direction: DismissDirection.endToStart,
         onDismissed: (DismissDirection direction) {
-          //Handle delete on dismiss
+          TransactionService.delete(transaction);
+          const snackBar = SnackBar(content: Text('Transaction Deleted!'), backgroundColor: Colors.red);
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
         },
         background: Container(
           alignment: Alignment.centerRight,
@@ -64,47 +67,5 @@ class TransactionItem extends StatelessWidget {
             ),
           ),
         ));
-/*
-    return Center(
-      child: Card(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ListTile(
-              leading: const Icon(Icons.account_balance, color: Colors.green),
-              title: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.currency_rupee_sharp),
-                  Text(transaction.amount)
-                ],
-              ),
-              subtitle: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(transaction.student.name),
-                  Text(transaction.student.email),
-                  Text(transaction.student.school),
-                ],
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Text(transaction.dateModified),
-                IconButton(
-                    onPressed: () {
-                      // Delete transaction
-                    },
-                    icon: const Icon(Icons.delete, size: 24.0, color: Colors.red,)),
-                const SizedBox(width: 8)
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  */
   }
 }
