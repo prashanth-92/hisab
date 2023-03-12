@@ -10,7 +10,7 @@ class TransactionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-        key: ValueKey<Transaction>(transaction),
+        key: UniqueKey(),
         direction: DismissDirection.endToStart,
         onDismissed: (DismissDirection direction) {
           TransactionService.delete(transaction);
