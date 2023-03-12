@@ -46,8 +46,16 @@ class _HomeState extends State<Home> {
                 return const CircularProgressIndicator();
               })),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(_dialogBuilder(context, null));
+        onPressed: () async {
+          final result =
+              await Navigator.push(context, _dialogBuilder(context, null));
+          if (!mounted || result.runtimeType != Transaction) {
+            return;
+          }
+          final existingTransactions = await transactions;
+          setState(() {
+            existingTransactions.add(result as Transaction);
+          });
         },
         child: const Icon(Icons.add),
       ),

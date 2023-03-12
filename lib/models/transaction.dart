@@ -28,13 +28,26 @@ class Transaction {
     return Transaction(
         id: json["ID"],
         amount: json["Amount"],
-        dateModified: json["DateTime"],
+        dateModified: toDateTimeString(json["DateTime"]),
         student: Student(
             email: '',
             name: json["Name"],
             school: json["School"],
             className: json["Class"],
-            phoneNumber: json["Phone"])
-        );
+            phoneNumber: json["Phone"]));
+  }
+
+  //Refer https://developers.google.com/sheets/api/guides/formats#about_date_time_values
+  static toDateTimeString(String gSheetsDateTime) {
+    try {
+      final epoch = DateTime(1899, 12, 30);
+      final gSheetsDateTimeSplit = gSheetsDateTime.split(".");
+      final gsheetsDateSinceEpoch = gSheetsDateTimeSplit.elementAt(0);
+      final gSheetsDate =
+          epoch.add(Duration(days: int.parse(gsheetsDateSinceEpoch)));
+      return gSheetsDate.toString().substring(0, 10);
+    } catch (err) {
+      rethrow;
+    }
   }
 }
