@@ -16,22 +16,6 @@ class Student {
   final String className;
   final String phoneNumber;
 
-  @override
-  String toString() {
-    return '$name, $email';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (other.runtimeType != runtimeType) {
-      return false;
-    }
-    return other is Student && other.name == name && other.email == email;
-  }
-
-  @override
-  int get hashCode => Object.hash(email, name);
-
   factory Student.fromGsheets(Map<String, dynamic> json) {
     return Student(
         email: json["Student's Gmail Address"] ?? '',
