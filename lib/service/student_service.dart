@@ -4,6 +4,7 @@ import 'package:hisab/service/credentials.dart';
 
 const _spreadsheetId =
     '1prCgM_JkpkP_1ZdvD8fW0Hefqv-My9eCECqKXPu0CzU'; //Student particulars 2022
+const sheetName = 'Form Responses 1';
 
 class StudentService {
   final List<Student> students;
@@ -14,10 +15,11 @@ class StudentService {
   static Future<StudentService> init() async {
     final gsheets = GSheets(credentials);
     final ss = await gsheets.spreadsheet(_spreadsheetId);
-    final sheet = ss.worksheetByTitle('Form Responses 1');
+    final sheet = ss.worksheetByTitle(sheetName);
     final studentsFromGSheet = await sheet!.values.map.allRows(fromRow: 2);
     final students = studentsFromGSheet!
         .map((student) => Student.fromGsheets(student))
+        .toSet()
         .toList();
     // ignore: prefer_conditional_assignment
     if (instance == null) {

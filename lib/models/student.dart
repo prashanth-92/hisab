@@ -24,4 +24,15 @@ class Student {
         className: json['Seeking Admission for Class...'],
         phoneNumber: json["Parent's Contact Number (WhatsApp)"] ?? '');
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (other.runtimeType != runtimeType) {
+      return false;
+    }
+    return other is Student && other.email == email;
+  }
+  
+  @override
+  int get hashCode => email.hashCode;
 }

@@ -13,18 +13,15 @@ class AutocompleteStudent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var students = StudentService.instance!.students;
-    
     return Autocomplete<Student>(
       displayStringForOption: displayStringForOption,
       optionsBuilder: (TextEditingValue textEditingValue) {
         if (textEditingValue.text == '') {
           return const Iterable<Student>.empty();
         }
-        return students.where((Student option) {
-          return option
-              .toString()
-              .contains(textEditingValue.text.toLowerCase());
-        });
+        return students.where((option) => option.name
+            .toLowerCase()
+            .contains(textEditingValue.text.toLowerCase()));
       },
       onSelected: (Student selection) {
         onSelectParam(selection);
