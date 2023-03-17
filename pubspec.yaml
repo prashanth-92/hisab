@@ -38,6 +38,7 @@ dependencies:
   gsheets: ^0.4.2
   uuid: ^3.0.6
   local_auth: 
+  shared_preferences: 
 
 
 

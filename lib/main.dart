@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hisab/screens/home.dart';
 import 'package:hisab/service/auth_service.dart';
 import 'package:hisab/service/student_service.dart';
-
-import 'screens/home.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

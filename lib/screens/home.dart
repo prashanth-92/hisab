@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hisab/models/transaction.dart';
-import 'package:hisab/screens/addfees.dart';
-
-import '../components/transaction_item.dart';
-import '../service/transaction_service.dart';
+import 'package:hisab/screens/settings.dart';
+import 'package:hisab/screens/students.dart';
+import 'package:hisab/screens/transactions.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key, required this.title});
@@ -14,59 +12,48 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late Future<List<Transaction>> transactions;
+  int _selectedIndex = 0;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    transactions = TransactionService.getTransactions();
+  static const List<Widget> _widgetOptions = <Widget>[
+    Transactions(),
+    Students(),
+    Settings(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text('Hisab'),
       ),
       body: Center(
-          child: FutureBuilder<List<Transaction>>(
-              future: transactions,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return TransactionItem(
-                          transaction: snapshot.data![index]);
-                    },
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
-                }
-                return const CircularProgressIndicator();
-              })),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _addNewTransaction,
-        child: const Icon(Icons.add),
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book),
+            label: 'Transactions',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.school),
+            label: 'Students',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
       ),
     );
-  }
-
-  _addNewTransaction() async {
-    final result = await Navigator.push(context, _dialogBuilder(context, null));
-    if (!mounted || result.runtimeType != Transaction) {
-      return;
-    }
-    final existingTransactions = await transactions;
-    setState(() {
-      existingTransactions.add(result as Transaction);
-    });
-    const snackBar = SnackBar(content: Text('Transaction Added!'), backgroundColor: Colors.green);
-    // ignore: use_build_context_synchronously
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-
-  Route<Object?> _dialogBuilder(BuildContext context, Object? arguments) {
-    return getAddFeesDialog(context, arguments);
   }
 }
