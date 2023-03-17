@@ -22,22 +22,33 @@ class _StudentsState extends State<Students> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const TextField(
+          decoration: InputDecoration(
+              icon: Icon(Icons.search), hintText: "Search here"),
+        ),
+        backgroundColor: Colors.white,
+      ),
       body: Center(
           child: FutureBuilder<List<Student>>(
               future: students,
               builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return StudentItem(student: snapshot.data![index]);
-                    },
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
-                }
-                return const CircularProgressIndicator();
+                return _populateView(snapshot);
               })),
     );
+  }
+
+  Widget _populateView(AsyncSnapshot<List<Student>> snapshot) {
+    if (snapshot.hasData) {
+      return ListView.builder(
+        itemCount: snapshot.data!.length,
+        itemBuilder: (BuildContext context, int index) {
+          return StudentItem(student: snapshot.data![index]);
+        },
+      );
+    } else if (snapshot.hasError) {
+      return Text('${snapshot.error}');
+    }
+    return const CircularProgressIndicator();
   }
 }
