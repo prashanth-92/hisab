@@ -7,20 +7,7 @@ class StudentItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-        key: UniqueKey(),
-        direction: DismissDirection.endToStart,
-        onDismissed: (DismissDirection direction) {
-          // TransactionService.delete(transaction);
-          // const snackBar = SnackBar(content: Text('Transaction Deleted!'), backgroundColor: Colors.red);
-          // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        },
-        background: Container(
-          alignment: Alignment.centerRight,
-          color: Colors.red,
-          child: const Icon(Icons.delete),
-        ),
-        child: Center(
+    return Center(
           child: Card(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -55,7 +42,7 @@ class StudentItem extends StatelessWidget {
               ],
             ),
           ),
-        ));
+        );
   }
 
   String truncateWithEllipsis(String data, int cutoff) {

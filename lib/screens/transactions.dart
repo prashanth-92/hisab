@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hisab/models/transaction.dart';
+import 'package:hisab/screens/add_fees.dart';
 import 'package:hisab/screens/addfees.dart';
 
 import '../components/transaction_item.dart';
@@ -49,7 +50,12 @@ class _TransactionState extends State<Transactions> {
   }
 
   _addNewTransaction() async {
-    final result = await Navigator.push(context, _dialogBuilder(context, null));
+    //final result = await Navigator.push(context, _dialogBuilder(context, null));
+    final result = await Navigator.push(
+        context,
+        PageRouteBuilder(
+            opaque: false,
+            pageBuilder: (BuildContext context, _, __) => const AddFees()));
     if (!mounted || result.runtimeType != Transaction) {
       return;
     }
