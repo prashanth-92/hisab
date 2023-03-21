@@ -10,11 +10,13 @@ class TransactionService {
   static String worksheetName = "Transactions";
   static Future<List<Transaction>> getTransactions() async {
     try {
-      //final gsheets = GSheets(credentials);
       final ss = await gSheets.spreadsheet(_spreadsheetId);
       final sheet = ss.worksheetByTitle(worksheetName);
       final transactionsFromGSheet =
           await sheet!.values.map.allRows(fromRow: 2);
+      if(transactionsFromGSheet == null){
+        return Future.value(List.empty());
+      }
       final transactions = transactionsFromGSheet!
           .map((transaction) => Transaction.fromGsheets(transaction))
           .where((transaction) => transaction.isActiveTransaction())

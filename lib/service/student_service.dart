@@ -3,7 +3,7 @@ import 'package:hisab/models/student.dart';
 import 'package:hisab/service/credentials.dart';
 
 const _spreadsheetId =
-    '1prCgM_JkpkP_1ZdvD8fW0Hefqv-My9eCECqKXPu0CzU'; //Student particulars 2022
+    '1u0SjVsmxk6m3lcncFodZ_6zpc0qX8fb3w1xLlNjfPrw'; //Student particulars 2023-2024
 const sheetName = 'Form Responses 1';
 
 class StudentService {
