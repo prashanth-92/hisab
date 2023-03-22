@@ -58,50 +58,109 @@ class AddFeesDialogState extends State<AddFees> {
                   keyboardType: const TextInputType.numberWithOptions(
                       decimal: true, signed: false),
                   controller: feesController),
-              ElevatedButton.icon(
-                onPressed: () {
-                  var currentValue =
-                      double.tryParse(feesController.text.toString()) ?? 0;
-                  var increasedValue = currentValue + 500.00;
-                  feesController.text = increasedValue.toString();
-                },
-                icon: const Icon(Icons.currency_rupee_sharp, size: 24.0),
-                label: const Text('500'),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      _applyAmount(feesController, 500);
+                    },
+                    icon: const Icon(Icons.currency_rupee_sharp, size: 24.0),
+                    label: const Text('+500'),
+                    style: _getAmountButtonStyle(true),
+                  ),
+                  const SizedBox(width: 20),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      _applyAmount(feesController, -500);
+                    },
+                    icon: const Icon(Icons.currency_rupee_sharp, size: 24.0),
+                    label: const Text('-500'),
+                    style: _getAmountButtonStyle(false),
+                  ),
+                ],
               ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  textStyle: Theme.of(context).textTheme.labelLarge,
-                ),
-                child: const Text('Save'),
-                onPressed: () {
-                  final transaction = Transaction(
-                      id: uuid.v1(),
-                      amount: feesController.text,
-                      dateModified: DateTime.now().toString(),
-                      isActive: "true",
-                      student: Student(
-                          email: '',
-                          name: studentName,
-                          school: schoolController.text,
-                          phoneNumber: phoneController.text,
-                          className: classController.text));
-                  TransactionService.save(transaction);
-                  Navigator.of(context).pop(transaction);
-                },
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      _applyAmount(feesController, 2000);
+                    },
+                    icon: const Icon(Icons.currency_rupee_sharp, size: 24.0),
+                    label: const Text('+2000'),
+                    style: _getAmountButtonStyle(true),
+                  ),
+                  const SizedBox(width: 20),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      _applyAmount(feesController, -2000);
+                    },
+                    icon: const Icon(Icons.currency_rupee_sharp, size: 24.0),
+                    label: const Text('-2000'),
+                    style: _getAmountButtonStyle(false),
+                  ),
+                ],
               ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  textStyle: Theme.of(context).textTheme.labelLarge,
-                ),
-                child: const Text('Cancel'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
+              const SizedBox(height: 30),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.save_sharp, size: 24.0),
+                    style: TextButton.styleFrom(
+                      textStyle: Theme.of(context).textTheme.labelLarge,
+                    ),
+                    label: const Text('Save'),
+                    onPressed: () {
+                      final transaction = Transaction(
+                          id: uuid.v1(),
+                          amount: feesController.text,
+                          dateModified: DateTime.now().toString(),
+                          isActive: "true",
+                          student: Student(
+                              email: '',
+                              name: studentName,
+                              school: schoolController.text,
+                              phoneNumber: phoneController.text,
+                              className: classController.text));
+                      TransactionService.save(transaction);
+                      Navigator.of(context).pop(transaction);
+                    },
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.close_sharp, size: 24.0),
+                    style: TextButton.styleFrom(
+                      textStyle: Theme.of(context).textTheme.labelLarge,
+                    ),
+                    label: const Text('Cancel'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  _applyAmount(TextEditingController feesController, int amount) {
+    var currentValue = double.tryParse(feesController.text.toString()) ?? 0;
+    var increasedValue = currentValue + amount;
+    feesController.text = increasedValue.toString();
+  }
+
+  _getAmountButtonStyle(bool isPositive) {
+    return ButtonStyle(
+        fixedSize: MaterialStateProperty.all(const Size.fromWidth(100)),
+        backgroundColor:
+            MaterialStateProperty.all(isPositive ? Colors.green : Colors.red));
   }
 }
