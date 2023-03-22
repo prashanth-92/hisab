@@ -17,7 +17,11 @@ class StudentService {
     final ss = await gsheets.spreadsheet(_spreadsheetId);
     final sheet = ss.worksheetByTitle(sheetName);
     final studentsFromGSheet = await sheet!.values.map.allRows(fromRow: 2);
-    final students = studentsFromGSheet!
+    if (studentsFromGSheet == null) {
+      instance ??= StudentService._(List.empty());
+      return instance!;
+    }
+    final students = studentsFromGSheet
         .map((student) => Student.fromGsheets(student))
         .toSet()
         .toList();

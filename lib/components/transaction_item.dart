@@ -14,7 +14,9 @@ class TransactionItem extends StatelessWidget {
         direction: DismissDirection.endToStart,
         onDismissed: (DismissDirection direction) {
           TransactionService.delete(transaction);
-          const snackBar = SnackBar(content: Text('Transaction Deleted!'), backgroundColor: Colors.red);
+          const snackBar = SnackBar(
+              content: Text('Transaction Deleted!'),
+              backgroundColor: Colors.red);
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         },
         background: Container(
@@ -42,8 +44,13 @@ class TransactionItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(transaction.student.name),
-                      Text(transaction.student.email),
-                      Text(transaction.student.school),
+                      Row(
+                        children: [
+                          Text(transaction.student.className),
+                          const SizedBox(width: 10),
+                          Text(transaction.student.school),
+                        ],
+                      ),
                     ],
                   ),
                 ),
