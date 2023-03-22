@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hisab/models/transaction.dart';
 import 'package:hisab/screens/add_fees.dart';
-import 'package:hisab/screens/addfees.dart';
 
 import '../components/transaction_item.dart';
 import '../service/transaction_service.dart';
@@ -50,7 +49,6 @@ class _TransactionState extends State<Transactions> {
   }
 
   _addNewTransaction() async {
-    //final result = await Navigator.push(context, _dialogBuilder(context, null));
     final result = await Navigator.push(
         context,
         PageRouteBuilder(
@@ -63,12 +61,9 @@ class _TransactionState extends State<Transactions> {
     setState(() {
       existingTransactions.add(result as Transaction);
     });
-    const snackBar = SnackBar(content: Text('Transaction Added!'), backgroundColor: Colors.green);
+    const snackBar = SnackBar(
+        content: Text('Transaction Added!'), backgroundColor: Colors.green);
     // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-
-  Route<Object?> _dialogBuilder(BuildContext context, Object? arguments) {
-    return getAddFeesDialog(context, arguments);
   }
 }
