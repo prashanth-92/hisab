@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 @immutable
 class Student {
+  static Uuid uuid = const Uuid();
   const Student({
     required this.email,
     required this.name,
@@ -35,4 +37,8 @@ class Student {
   
   @override
   int get hashCode => email.hashCode;
+
+  String getID(){
+    return uuid.v5(Uuid.NAMESPACE_URL, "$school-$email");
+  }
 }

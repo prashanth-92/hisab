@@ -1,6 +1,6 @@
 import 'package:gsheets/gsheets.dart';
 import 'package:hisab/models/transaction.dart';
-
+import 'package:hisab/service/consolidated_fees_service.dart';
 import 'credentials.dart';
 
 const _spreadsheetId =
@@ -33,6 +33,7 @@ class TransactionService {
     final sheet = ss.worksheetByTitle(worksheetName);
     final row = transaction.toGsheets();
     sheet!.values.map.insertRowByKey(transaction.id, row, appendMissing: true);
+    ConsolidatedFeesService.save(transaction);
   }
 
   static delete(Transaction transaction) async {
