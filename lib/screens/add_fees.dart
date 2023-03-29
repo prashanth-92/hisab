@@ -19,6 +19,7 @@ class AddFeesDialogState extends State<AddFees> {
   var feesController = TextEditingController();
   var classController = TextEditingController();
   var phoneController = TextEditingController();
+  var emailController = TextEditingController();
   String studentName = '';
 
   @override
@@ -40,6 +41,7 @@ class AddFeesDialogState extends State<AddFees> {
                 classController.text = student.className;
                 phoneController.text = student.phoneNumber;
                 studentName = student.name;
+                emailController.text = student.email;
               }),
               TextField(
                   decoration: const InputDecoration(labelText: 'Class'),
@@ -53,6 +55,10 @@ class AddFeesDialogState extends State<AddFees> {
                   decoration: const InputDecoration(labelText: 'Phone'),
                   enabled: false,
                   controller: phoneController),
+              TextField(
+                  decoration: const InputDecoration(labelText: 'Email'),
+                  enabled: false,
+                  controller: emailController),
               TextField(
                   decoration: const InputDecoration(labelText: 'Fees Paid'),
                   keyboardType: const TextInputType.numberWithOptions(
@@ -122,7 +128,7 @@ class AddFeesDialogState extends State<AddFees> {
                           dateModified: DateTime.now().toString(),
                           isActive: "true",
                           student: Student(
-                              email: '',
+                              email: emailController.text,
                               name: studentName,
                               school: schoolController.text,
                               phoneNumber: phoneController.text,

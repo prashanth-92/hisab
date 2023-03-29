@@ -14,15 +14,18 @@ class ConsolidatedFeesService {
   static save(Transaction transaction) async {
     final ss = await gSheets.spreadsheet(_spreadsheetId);
     final sheet = ss.worksheetByTitle(consolidatedSheet);
-    print(transaction.student.getID());
+    final existingConsolidatedFees =
+        await sheet!.values.map.rowByKey(transaction.student.getID());
+    if (existingConsolidatedFees != null) {
+      final existingFees = existingConsolidatedFees["TotalFeesPaid"];
+      transaction.amount =
+          (double.parse(existingFees!) + double.parse(transaction.amount))
+              .toString();  
+    }
     final consolidatedFees =
         ConsolidatedFees.fromTransaction(transaction, transaction.amount);
     final row = consolidatedFees.toGsheets();
-    await sheet!.values.map
-        .insertRowByKey(consolidatedFees.id, row, appendMissing: true);
-    print("Complete===>");
-    await sheet.values.rowByKey(transaction.student.getID());
-    final data = await sheet.values.map.rowByKey(transaction.student.getID(), fromColumn: 1);
-    print(ConsolidatedFees.fromGsheets(data!));
+    await sheet.values.map
+        .insertRowByKey(consolidatedFees.id, row);
   }
 }

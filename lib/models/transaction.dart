@@ -9,7 +9,7 @@ class Transaction {
       required this.student});
 
   final String id;
-  final String amount;
+  String amount;
   final String dateModified;
   final Student student;
   final String isActive;
@@ -23,6 +23,7 @@ class Transaction {
       'Class': student.className,
       'Phone': student.phoneNumber,
       'School': student.school,
+      'Email' : student.email,
       'IsActive': isActive,
     };
   }
@@ -38,7 +39,7 @@ class Transaction {
         dateModified: toDateTimeString(json["DateTime"]),
         isActive: json["IsActive"],
         student: Student(
-            email: '',
+            email: json["Email"] ?? '',
             name: json["Name"],
             school: json["School"],
             className: json["Class"],
