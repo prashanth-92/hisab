@@ -32,8 +32,24 @@ class _TransactionState extends State<Transactions> {
                   return ListView.builder(
                     itemCount: snapshot.data!.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return TransactionItem(
-                          transaction: snapshot.data![index]);
+                      final Transaction transaction = snapshot.data![index];
+                      return Dismissible(
+                          key: UniqueKey(),
+                          direction: DismissDirection.endToStart,
+                          onDismissed: (DismissDirection direction) {
+                            TransactionService.delete(transaction);
+                            const snackBar = SnackBar(
+                                content: Text('Transaction Deleted!'),
+                                backgroundColor: Colors.red);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          },
+                          background: Container(
+                            alignment: Alignment.centerRight,
+                            color: Colors.red,
+                            child: const Icon(Icons.delete),
+                          ),
+                          child: TransactionItem(transaction: transaction));
                     },
                   );
                 } else if (snapshot.hasError) {

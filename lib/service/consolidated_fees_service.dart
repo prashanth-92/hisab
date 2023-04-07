@@ -20,12 +20,11 @@ class ConsolidatedFeesService {
       final existingFees = existingConsolidatedFees["TotalFeesPaid"];
       transaction.amount =
           (double.parse(existingFees!) + double.parse(transaction.amount))
-              .toString();  
+              .toString();
     }
     final consolidatedFees =
         ConsolidatedFees.fromTransaction(transaction, transaction.amount);
     final row = consolidatedFees.toGsheets();
-    await sheet.values.map
-        .insertRowByKey(consolidatedFees.id, row);
+    await sheet.values.map.insertRowByKey(consolidatedFees.id, row);
   }
 }

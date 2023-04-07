@@ -34,11 +34,11 @@ class Student {
     }
     return other is Student && other.email == email;
   }
-  
+
   @override
   int get hashCode => email.hashCode;
 
-  String getID(){
+  String getID() {
     return uuid.v5(Uuid.NAMESPACE_URL, "$school-$email");
   }
 }

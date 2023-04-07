@@ -23,12 +23,13 @@ class Transaction {
       'Class': student.className,
       'Phone': student.phoneNumber,
       'School': student.school,
-      'Email' : student.email,
+      'Email': student.email,
+      'StudentId': student.getID(),
       'IsActive': isActive,
     };
   }
 
-  bool isActiveTransaction(){
+  bool isActiveTransaction() {
     return isActive.toLowerCase() == "true";
   }
 

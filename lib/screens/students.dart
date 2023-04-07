@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hisab/components/student_item.dart';
+import 'package:hisab/screens/fees_details.dart';
 import 'package:hisab/service/student_service.dart';
 import '../models/student.dart';
 
@@ -43,7 +44,18 @@ class _StudentsState extends State<Students> {
       return ListView.builder(
         itemCount: snapshot.data!.length,
         itemBuilder: (BuildContext context, int index) {
-          return StudentItem(student: snapshot.data![index]);
+          return ListTile(
+              title: StudentItem(student: snapshot.data![index]),
+              onTap: () {
+                final Student student = snapshot.data![index];
+                Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                        opaque: false,
+                        pageBuilder: (BuildContext context, _, __) =>
+                            FeesDetails(student: student)));
+              });
+          //return StudentItem(student: snapshot.data![index]);
         },
       );
     } else if (snapshot.hasError) {
