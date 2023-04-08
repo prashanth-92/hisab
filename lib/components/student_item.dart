@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/student.dart';
+import '../screens/add_fees.dart';
 
 class StudentItem extends StatelessWidget {
   const StudentItem({super.key, required this.student});
@@ -37,6 +38,17 @@ class StudentItem extends StatelessWidget {
                     ],
                   ),
                 ],
+              ),
+              trailing: IconButton(
+                icon: const Icon(Icons.add),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                          opaque: false,
+                          pageBuilder: (BuildContext context, _, __) =>
+                              AddFees.fromStudent(student)));
+                },
               ),
             ),
           ],

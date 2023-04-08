@@ -6,8 +6,11 @@ import '../models/student.dart';
 import '../models/transaction.dart';
 import '../service/transaction_service.dart';
 
+// ignore: must_be_immutable
 class AddFees extends StatefulWidget {
-  const AddFees({super.key});
+  Student? student;
+  AddFees({super.key});
+  AddFees.fromStudent(this.student, {super.key});
 
   @override
   State<StatefulWidget> createState() => AddFeesDialogState();
@@ -21,6 +24,20 @@ class AddFeesDialogState extends State<AddFees> {
   var phoneController = TextEditingController();
   var emailController = TextEditingController();
   String studentName = '';
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (widget.student != null) {
+      final Student student = widget.student!;
+      AutocompleteStudent.displayStringForOption(student);
+      studentName = student.name;
+      schoolController.text = student.school;
+      classController.text = student.className;
+      phoneController.text = student.phoneNumber;
+      emailController.text = student.email;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -69,7 +69,7 @@ class _TransactionState extends State<Transactions> {
         context,
         PageRouteBuilder(
             opaque: false,
-            pageBuilder: (BuildContext context, _, __) => const AddFees()));
+            pageBuilder: (BuildContext context, _, __) => AddFees()));
     if (!mounted || result.runtimeType != Transaction) {
       return;
     }
