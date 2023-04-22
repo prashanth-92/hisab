@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/student.dart';
+import '../models/transaction.dart';
 import '../screens/add_fees.dart';
 
 class StudentItem extends StatelessWidget {
@@ -41,13 +42,21 @@ class StudentItem extends StatelessWidget {
               ),
               trailing: IconButton(
                 icon: const Icon(Icons.add),
-                onPressed: () {
-                  Navigator.push(
+                onPressed: () async {
+                  final result = await Navigator.push(
                       context,
                       PageRouteBuilder(
                           opaque: false,
                           pageBuilder: (BuildContext context, _, __) =>
                               AddFees.fromStudent(student)));
+                  const snackBar = SnackBar(
+                      content: Text('Transaction Added!'),
+                      backgroundColor: Colors.green);
+                  if (result.runtimeType != Transaction) {
+                    return;
+                  }
+                  // ignore: use_build_context_synchronously
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 },
               ),
             ),

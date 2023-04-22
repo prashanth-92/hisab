@@ -51,3 +51,5 @@ class ConsolidatedFees {
         totalFeesPaid: totalFeesPaid);
   }
 }
+
+enum Action { update, delete }

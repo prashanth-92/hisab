@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-import '../components/autocomplete.dart';
 import '../models/student.dart';
 import '../models/transaction.dart';
 import '../service/transaction_service.dart';
@@ -23,15 +22,14 @@ class AddFeesDialogState extends State<AddFees> {
   var classController = TextEditingController();
   var phoneController = TextEditingController();
   var emailController = TextEditingController();
-  String studentName = '';
+  var studentNameController = TextEditingController();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (widget.student != null) {
       final Student student = widget.student!;
-      AutocompleteStudent.displayStringForOption(student);
-      studentName = student.name;
+      studentNameController.text = student.name;
       schoolController.text = student.school;
       classController.text = student.className;
       phoneController.text = student.phoneNumber;
@@ -53,13 +51,10 @@ class AddFeesDialogState extends State<AddFees> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              AutocompleteStudent(onSelectParam: (Student student) {
-                schoolController.text = student.school;
-                classController.text = student.className;
-                phoneController.text = student.phoneNumber;
-                studentName = student.name;
-                emailController.text = student.email;
-              }),
+              TextField(
+                  decoration: const InputDecoration(labelText: 'Student name'),
+                  enabled: false,
+                  controller: studentNameController),
               TextField(
                   decoration: const InputDecoration(labelText: 'Class'),
                   enabled: false,
@@ -146,7 +141,7 @@ class AddFeesDialogState extends State<AddFees> {
                           isActive: "true",
                           student: Student(
                               email: emailController.text,
-                              name: studentName,
+                              name: studentNameController.text,
                               school: schoolController.text,
                               phoneNumber: phoneController.text,
                               className: classController.text));

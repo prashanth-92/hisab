@@ -1,4 +1,5 @@
 import 'package:gsheets/gsheets.dart';
+import 'package:hisab/models/consolidated_fees.dart';
 import 'package:hisab/models/transaction.dart';
 import 'package:hisab/service/consolidated_fees_service.dart';
 import 'credentials.dart';
@@ -45,13 +46,13 @@ class TransactionService {
     final sheet = ss.worksheetByTitle(worksheetName);
     final row = transaction.toGsheets();
     sheet!.values.map.insertRowByKey(transaction.id, row, appendMissing: true);
-    ConsolidatedFeesService.save(transaction);
+    ConsolidatedFeesService.upsert(transaction, Action.update);
   }
 
   static delete(Transaction transaction) async {
     final ss = await gSheets.spreadsheet(_spreadsheetId);
     final sheet = ss.worksheetByTitle(worksheetName);
-    sheet!.values.insertValueByKeys('false',
-        columnKey: 'IsActive', rowKey: transaction.id);
+    sheet!.values.insertValueByKeys('false', columnKey: 'IsActive', rowKey: transaction.id);
+    ConsolidatedFeesService.upsert(transaction, Action.delete);
   }
 }

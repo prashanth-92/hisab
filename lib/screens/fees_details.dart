@@ -38,6 +38,12 @@ class _FeesDetailsState extends State<FeesDetails> {
                   if (snapshot.data!.isEmpty) {
                     return const Text("No data available");
                   } else {
+                    final transactions = snapshot.data!;
+                    final totalFeesPaid = transactions
+                        .where(
+                            (transaction) => transaction.isActiveTransaction())
+                        .map((transaction) => transaction.amount)
+                        .reduce((previous, next) => previous + next);
                     return ListView.builder(
                       itemCount: snapshot.data!.length,
                       itemBuilder: (BuildContext context, int index) {

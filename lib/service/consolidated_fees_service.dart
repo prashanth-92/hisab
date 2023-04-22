@@ -11,16 +11,25 @@ class ConsolidatedFeesService {
   static GSheets gSheets = GSheets(credentials);
   static String consolidatedSheet = "Consolidated";
 
-  static save(Transaction transaction) async {
+  static upsert(Transaction transaction, Action action) async {
     final ss = await gSheets.spreadsheet(_spreadsheetId);
     final sheet = ss.worksheetByTitle(consolidatedSheet);
     final existingConsolidatedFees =
         await sheet!.values.map.rowByKey(transaction.student.getID());
     if (existingConsolidatedFees != null) {
       final existingFees = existingConsolidatedFees["TotalFeesPaid"];
-      transaction.amount =
-          (double.parse(existingFees!) + double.parse(transaction.amount))
-              .toString();
+      switch (action) {
+        case Action.update:
+          transaction.amount =
+              (double.parse(existingFees!) + double.parse(transaction.amount))
+                  .toString();
+          break;
+        case Action.delete:
+          transaction.amount =
+              (double.parse(existingFees!) - double.parse(transaction.amount))
+                  .toString();
+          break;
+      }
     }
     final consolidatedFees =
         ConsolidatedFees.fromTransaction(transaction, transaction.amount);
