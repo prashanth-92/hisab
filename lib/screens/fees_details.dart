@@ -14,49 +14,101 @@ class FeesDetails extends StatefulWidget {
 }
 
 class _FeesDetailsState extends State<FeesDetails> {
-  late Future<List<Transaction>> transactions;
+  List<Transaction>? transactions;
+  String? totalFees;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    transactions = TransactionService.getTransactionsForStudentWithId(
-        widget.student.getID());
+    TransactionService.getTransactionsForStudentWithId(widget.student.getID())
+        .then((transactions) => {
+              setState(() => {
+                    if (transactions.isNotEmpty)
+                      {
+                        this.transactions = transactions,
+                        totalFees = transactions
+                            .where((transaction) =>
+                                transaction.isActiveTransaction())
+                            .map((transaction) =>
+                                double.parse(transaction.amount))
+                            .reduce((previous, next) => previous + next)
+                            .toString()
+                      }
+                    else
+                      {this.transactions = List.empty()}
+                  })
+            });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.student.name),
-      ),
-      backgroundColor: Colors.white.withOpacity(0.85),
-      body: Center(
-          child: FutureBuilder<List<Transaction>>(
-              future: transactions,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  if (snapshot.data!.isEmpty) {
-                    return const Text("No data available");
-                  } else {
-                    final transactions = snapshot.data!;
-                    final totalFeesPaid = transactions
-                        .where(
-                            (transaction) => transaction.isActiveTransaction())
-                        .map((transaction) => transaction.amount)
-                        .reduce((previous, next) => previous + next);
-                    return ListView.builder(
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return TransactionItem(
-                            transaction: snapshot.data![index]);
-                      },
-                    );
-                  }
-                } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
-                }
-                return const CircularProgressIndicator();
-              })),
-    );
+        appBar: AppBar(
+          title: Text(widget.student.name),
+        ),
+        backgroundColor: Colors.white,
+        body: getTransactions());
+  }
+
+  Widget getTransactions() {
+    if (transactions != null && transactions!.isEmpty) {
+      return getDefaultNoDataFound();
+    } else {
+      return transactions == null
+          ? getCenteredLoader()
+          : getTotalFeesAndTransactions();
+    }
+  }
+
+  Column getDefaultNoDataFound() {
+    return Column(children: [
+      Expanded(
+          child: Container(
+        color: Colors.white,
+        height: 50.0,
+        child: const Center(
+          child: Text(
+            "No data found",
+            style: TextStyle(
+              fontSize: 18.0,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ))
+    ]);
+  }
+
+  Column getTotalFeesAndTransactions() {
+    return Column(children: [
+      Expanded(
+          flex: 1,
+          child: Text(
+            "Total Fees Paid: $totalFees",
+            style: const TextStyle(fontSize: 20),
+          )),
+      Expanded(
+          flex: 30,
+          child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount: transactions!.length,
+            itemBuilder: (BuildContext context, int index) {
+              return TransactionItem(transaction: transactions![index]);
+            },
+          ))
+    ]);
+  }
+
+  Column getCenteredLoader() {
+    return Column(children: [
+      Expanded(
+          child: Container(
+        color: Colors.white,
+        height: 50.0,
+        child: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      ))
+    ]);
   }
 }
